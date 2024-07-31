@@ -1,0 +1,14 @@
+{
+  "name": "sprint4",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "nodemon --watch src --ext ts --exec \"npx ts-node src/index.ts\"",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
