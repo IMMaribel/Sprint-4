@@ -61,3 +61,24 @@ function saveJoke(joke, score) {
 });
 (_d = document.getElementById('nextJokeButton')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', displayJoke);
 window.onload = displayJoke;
+
+function fetchWeather() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Barcelona?unitGroup=metric&key=TT78V593MDZKGXUUNJEGXJATD&contentType=json", {
+            headers: { 'Accept': 'application/json' }
+        });
+        return yield response.json();
+    });
+}
+function displayWeather() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const weatherContainer = document.getElementById('weatherContainer');
+        const weatherData = yield fetchWeather();
+        const weatherInfo = `Current Temperature: ${weatherData.currentConditions.temp}°C, Conditions: ${weatherData.currentConditions.conditions}`;
+        if (weatherContainer) {
+            weatherContainer.innerText = weatherInfo;
+            console.log(weatherInfo);
+        }
+    });
+}
+displayWeather();
