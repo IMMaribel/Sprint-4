@@ -19,16 +19,38 @@ function fetchJoke() {
         return data.joke;
     });
 }
+function fetchChuckNorrisJoke() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch('https://api.chucknorris.io/jokes/random', {
+            headers: { 'Accept': 'application/json' }
+        });
+        const data = yield response.json();
+        return data.value;
+    });
+}
+function fetchRandomJoke() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const random = Math.random();
+        if (random < 0.5) {
+            return yield fetchJoke();
+        }
+        else {
+            return yield fetchChuckNorrisJoke();
+        }
+    });
+}
 function displayJoke() {
     return __awaiter(this, void 0, void 0, function* () {
         const jokeContainer = document.getElementById('jokeContainer');
-        const joke = yield fetchJoke();
+        const joke = yield fetchRandomJoke();
         if (jokeContainer) {
             jokeContainer.innerText = joke;
             console.log(joke);
         }
     });
 }
+(_a = document.getElementById('nextJokeButton')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', displayJoke);
+window.onload = displayJoke;
 function saveJoke(joke, score) {
     const JokeReport = {
         joke,
@@ -44,24 +66,21 @@ function saveJoke(joke, score) {
     }
     console.log(JokeReport);
 }
-(_a = document.getElementById('score1')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
+(_b = document.getElementById('score1')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => {
     var _a;
     const joke = ((_a = document.getElementById('jokeContainer')) === null || _a === void 0 ? void 0 : _a.innerText) || '';
     saveJoke(joke, 1);
 });
-(_b = document.getElementById('score2')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => {
+(_c = document.getElementById('score2')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', () => {
     var _a;
     const joke = ((_a = document.getElementById('jokeContainer')) === null || _a === void 0 ? void 0 : _a.innerText) || '';
     saveJoke(joke, 2);
 });
-(_c = document.getElementById('score3')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', () => {
+(_d = document.getElementById('score3')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', () => {
     var _a;
     const joke = ((_a = document.getElementById('jokeContainer')) === null || _a === void 0 ? void 0 : _a.innerText) || '';
     saveJoke(joke, 3);
 });
-(_d = document.getElementById('nextJokeButton')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', displayJoke);
-window.onload = displayJoke;
-
 function fetchWeather() {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Barcelona?unitGroup=metric&key=TT78V593MDZKGXUUNJEGXJATD&contentType=json", {

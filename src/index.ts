@@ -1,7 +1,5 @@
 interface JokeResponse {
-    id: string;
     joke: string;
-    status: number;
 }
 
 interface JokeReport {
@@ -23,18 +21,38 @@ async function fetchJoke(): Promise<string> {
     const response = await fetch('https://icanhazdadjoke.com/', {
         headers: { 'Accept': 'application/json' }
     });
-    const data: JokeResponse = await response.json();
+    const data: { joke : string } = await response.json();
     return data.joke;
+}
+
+async function fetchChuckNorrisJoke(): Promise<string> {
+    const response = await fetch('https://api.chucknorris.io/jokes/random', {
+        headers: { 'Accept': 'application/json' }
+    });
+    const data: { value: string } = await response.json();
+    return data.value;
+}
+
+async function fetchRandomJoke(): Promise<string> {
+    const random = Math.random();
+    if (random < 0.5) {
+        return await fetchJoke();
+    } else {
+        return await fetchChuckNorrisJoke();
+    }
 }
 
 async function displayJoke() {
     const jokeContainer = document.getElementById('jokeContainer');
-    const joke = await fetchJoke();
+    const joke = await fetchRandomJoke();
     if (jokeContainer) {
         jokeContainer.innerText = joke;
         console.log(joke);
     }
 }
+document.getElementById('nextJokeButton')?.addEventListener('click', displayJoke);
+
+window.onload = displayJoke;
 
 function saveJoke(joke: string, score: number) {
     const JokeReport: JokeReport = {
@@ -51,7 +69,7 @@ function saveJoke(joke: string, score: number) {
     } else {
         reportAcudits.push(JokeReport);
     }
-
+    
     console.log(JokeReport);
 }
 
@@ -70,9 +88,6 @@ document.getElementById('score3')?.addEventListener('click', () => {
     saveJoke(joke, 3);
 });
 
-document.getElementById('nextJokeButton')?.addEventListener('click', displayJoke);
-
-window.onload = displayJoke;
 
   
 async function fetchWeather(): Promise<WeatherResponse> {
